@@ -1,11 +1,18 @@
-<h1>list</h1>
-<a href="/blog/user/write/">글쓰기</a>
+<h2>{{ blog_owner.username }}님의 블로그</h2>
+
+{% if is_owner %}
+    <a href="/blog/{{ blog_owner.username }}/write/">글쓰기</a>
+{% endif %}
+
+<a href="/">메인으로</a>
 <hr>
 {% for post in post_list %}
     <div>
-        <a href="/blog/user/{{ post.id }}/">
+        <a href="/blog/{{ blog_owner.username }}/{{ post.id }}/">
             {{ post.title }}
         </a>
     </div>
+{% empty %}
+    <p>작성한 글이 없습니다.</p>
 
 {% endfor %}

@@ -15,6 +15,8 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
     class Meta:
         ordering = ["-id"]
 
@@ -23,6 +25,8 @@ class Comment(models.Model):
     content = models.CharField(max_length=10)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ["-id"]

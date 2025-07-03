@@ -1,16 +1,27 @@
-<h2>detail</h2>
-{{ title }}
-{{ description }}
-<img src="{{ photo.url }}" alt="" width="300px">
-<audio controls>
+<h2>POST</h2>
+{{ title }} <br>
+<hr>
+{{ description }} <br>
+<img src="{{ photo.url }}" alt="" width="300px"> <br>
+<audio controls autoplay loop>
     <source src="/static/music/{{ music }}.wav" type="audio/wav">
     음악재생을 지원하지 않는 브라우저입니다.
-</audio>
-<a href="/blog/user/{{ post.id }}/comment/">댓글쓰기</a>
-<a href="/blog/">목록으로</a>
-<a href="/blog/user/{{ post.id }}/post/edit/">수정하기</a>
-<a href="/blog/user/{{ post.id }}/post/delete/">게시글 삭제하기</a>
+</audio> <br>
+<a href="/blog/{{ username }}/">목록으로</a>
+{% if request.user == post.author %}
+    <a href="/blog/user/{{ post.id }}/post/edit/">수정하기</a>
+    <a href="/blog/user/{{ post.id }}/post/delete/">게시글 삭제하기</a> <br>
+{% endif %}
+
+{% if request.user.is_authenticated %}
+    <a href="/blog/user/{{ post.id }}/comment/">댓글쓰기</a> <br>
+{% endif %}
+<hr>
 
 {% for comment in comment_list %}
     {{ comment.content }}
+    {% if request.user == comment.author %}
+        <a href="/blog/{{ request.user.name }}/{{ comment.id }}/comment/edit/">수정</a>
+        <a href="/blog/{{ request.user.name }}/{{ post.id }}/comment/{{ comment.id }}/delete/">삭제</a> <br>
+    {% endif %}
 {% endfor %}

@@ -1,5 +1,18 @@
 <h1>하하 첫화면입니다!</h1>
 
-<a href="blog/">블로그 입장</a>
-<a href="">회원가입</a>
-<a href="">로그인</a>
+    {% if not request.user.is_authenticated %}
+        <a href="auth/register/">회원가입</a>
+        <a href="auth/login/">로그인</a>
+    {% else %}
+        <a href="blog/{{ request.user.username }}/">내 블로그</a>
+        <form action="{% url 'logout' %}" method="post" style="display:inline">
+            {% csrf_token %}
+            <button type="submit">로그아웃</button>
+        </form>
+    {% endif %}
+<hr>
+
+<h3>들어가보세요!</h3>
+    {% for user in user_list %}
+        <li><a href="/blog/{{ user.username }}/">{{ user.username }}</a></li>
+    {% endfor %}
