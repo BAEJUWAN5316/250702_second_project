@@ -1,1 +1,11 @@
 <h1>list</h1>
+<a href="/blog/user/write/">글쓰기</a>
+<hr>
+{% for post in post_list %}
+    <div>
+        <a href="/blog/user/{{ post.id }}/">
+            {{ post.title }}
+        </a>
+    </div>
+
+{% endfor %}

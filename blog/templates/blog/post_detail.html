@@ -6,3 +6,11 @@
     <source src="/static/music/{{ music }}.wav" type="audio/wav">
     음악재생을 지원하지 않는 브라우저입니다.
 </audio>
+<a href="/blog/user/{{ post.id }}/comment/">댓글쓰기</a>
+<a href="/blog/">목록으로</a>
+<a href="/blog/user/{{ post.id }}/post/edit/">수정하기</a>
+<a href="/blog/user/{{ post.id }}/post/delete/">게시글 삭제하기</a>
+
+{% for comment in comment_list %}
+    {{ comment.content }}
+{% endfor %}

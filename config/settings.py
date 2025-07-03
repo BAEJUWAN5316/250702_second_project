@@ -1,20 +1,25 @@
 from pathlib import Path
 import os
+from environ import Env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = Env()
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+ENV_PATH = BASE_DIR / ".env"
+env.read_env(ENV_PATH, overwrite=True)
+
+# MEDIA_URL = "media/"
+# MEDIA_ROOT = BASE_DIR / "media"
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-lfq)u!7uk8c-#$sx&y1)2o9p$e=^m6qjb0psi!^-f&$wp(syvz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default = ["127.0.0.1"])
 
 
 # Application definition
@@ -44,7 +49,9 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / "templates",
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
