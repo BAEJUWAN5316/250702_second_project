@@ -6,6 +6,7 @@ from blog.forms import PostForm, CommentForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 # 메인페이지
 def blog_main():
@@ -15,13 +16,23 @@ def blog_main():
 # 포스트 목록 페이지
 def post_list(request: HttpRequest, username) -> HttpResponse:
     blog_owner = get_object_or_404(User, username=username)
-    posts = Post.objects.filter(author=blog_owner)
+
+    query = request.GET.get("q", "")
+    if query:
+        posts = Post.objects.filter(
+            author=blog_owner
+        ).filter(
+            Q(title__icontains=query) | Q(description__icontains=query)
+        )
+    else:
+        posts = Post.objects.filter(author=blog_owner)
+
     is_owner = request.user == blog_owner
 
     return render(
         request, 
         "blog/post_list.html",
-        context={"post_list": posts, "blog_owner":blog_owner, "is_owner":is_owner}
+        context={"post_list": posts, "blog_owner":blog_owner, "is_owner":is_owner, "query":query}
         )
 
 
@@ -64,7 +75,7 @@ def post_form(request:HttpRequest, username: str) -> HttpResponse:
         {"form":form}
     )
 # 포스트 수정 페이지
-def post_edit(request:HttpRequest, pk:int, username):
+def post_edit(request:HttpRequest, pk:int, username:str):
     post = get_object_or_404(Post, pk=pk)
 
     if request.method == "GET":
@@ -83,14 +94,19 @@ def post_edit(request:HttpRequest, pk:int, username):
     )
 
 # 포스트 지우기
-def post_delete(request: HttpRequest, pk: int) -> HttpResponse:
-    if request.method == "GET":
-        return render(request, "blog/confirm_delete.html")
-    
+def post_delete(request: HttpRequest, pk: int, username:str) -> HttpResponse:
     post = get_object_or_404(Post, pk=pk)
+
+    if request.method == "GET":
+        return render(
+            request, 
+            "blog/confirm_delete.html", 
+            {"username":username, "post":post})
+    
     post.delete()
 
-    return redirect("/blog/")
+    delete_url = f"/blog/{username}/"
+    return redirect(delete_url)
 
 
 # 댓글쓰기

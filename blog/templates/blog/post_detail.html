@@ -19,9 +19,11 @@
 <hr>
 
 {% for comment in comment_list %}
+    {{ comment.author.username }}
     {{ comment.content }}
     {% if request.user == comment.author %}
         <a href="/blog/{{ request.user.name }}/{{ comment.id }}/comment/edit/">수정</a>
-        <a href="/blog/{{ request.user.name }}/{{ post.id }}/comment/{{ comment.id }}/delete/">삭제</a> <br>
+        <a href="/blog/{{ request.user.username }}/{{ post.id }}/comment/{{ comment.id }}/delete/">삭제</a>
     {% endif %}
+    <br>
 {% endfor %}

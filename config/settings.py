@@ -128,3 +128,5 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGOUT_REDIRECT_URL = '/blog/'  
+
+OPENAI_API_KEY = env.str("OPENAI_API_KEY", default=None)

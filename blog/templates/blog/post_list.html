@@ -5,6 +5,16 @@
 {% endif %}
 
 <a href="/">메인으로</a>
+
+<form action="" method="get">
+    <input type="text" name="q" placeholder="검색어를 입력하세요" value="{{ query }}">
+    <button type="submit">검색</button>
+</form>
+
+{% if query %}
+    <p>"<strong>{{ query }}</strong>"에 대한 검색 결과입니다.</p>
+{% endif %}
+
 <hr>
 {% for post in post_list %}
     <div>
