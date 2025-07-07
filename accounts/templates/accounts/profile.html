@@ -1,0 +1,28 @@
+<h2>프로필 수정</h2>
+<a href="/">돌아가기</a>
+
+<p>닉네임 : {{ profile.nickname }}</p>
+<p>아이디 : {{ request.user.username }}</p>
+
+{% if profile.profile_image %}
+    <img src="{{ profile.profile_image.url }}" alt="" width="100">
+{% endif %}
+
+<h2>
+    {% if profile.trait %}
+        [{{ profile.trait }} {{ profile.nickname|default:user.username }}]
+    {% else %}
+        {{ profile.nickname|default:user.username }}
+    {% endif %}
+</h2>
+
+<hr>
+
+{% if not profile.trait %}
+    <a href="{% url 'assign_trait' %}">특성 부여받기</a>
+{% else %}
+    <p><em>특성은 한 번만 부여되며 수정할 수 없습니다.</em></p>
+{% endif %}
+
+<a href="{% url 'profile_edit' %}">프로필 수정하기</a>
+<a href="{% url 'password_change' %}">비밀번호 변경하기</a>

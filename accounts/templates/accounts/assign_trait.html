@@ -1,0 +1,7 @@
+<h2>당신의 특성 부여를 위한 질문입니다.</h2>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">특성 생성하기</button>
+</form>

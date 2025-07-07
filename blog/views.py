@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.db.models import F
 
 # 메인페이지
 def blog_main():
@@ -39,6 +40,8 @@ def post_list(request: HttpRequest, username) -> HttpResponse:
 # 포스트, 댓글 페이지
 def post_detail(request: HttpRequest, username:str, pk:int) -> HttpResponse:
     post = get_object_or_404(Post, pk=pk)
+    Post.objects.filter(pk=post.pk).update(views=F('views') + 1)
+
     title = post.title
     description = post.description
     photo = post.photo

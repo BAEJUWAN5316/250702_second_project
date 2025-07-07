@@ -1,34 +1,23 @@
-import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+from pyhub.llm import OpenAILLM
 
-import django
-django.setup()
+def generate_trait(q1, q2, q3):
+    llm = OpenAILLM(model = "gpt-4o-mini")
 
-from pyhub.llm import OpenAILLM, UpstageLLM
-from pydantic import BaseModel
-from django.conf import settings
-from blog.models import Post
-
-llm = OpenAILLM(
-    api_key=settings.OPENAI_API_KEY,
-    model="gpt-4o",
-    system_prompt=
-        """
+    prompt = f"""
         너는 시적이고 감성적인 마법사야.  
         사람에게 단 하나의 특성을 부여하지.  
 
         지금부터 어떤 사람이 세 가지 질문에 대답할 거야.
 
-        [1] 새벽 2시에 가장 친한 친구에게 전화가 왔습니다. 친구는 무슨 말을 할까요?  
-        [2] 자고 일어났더니 어제 꿈을 꾼 것 같은데 기억이 잘 나지 않습니다. 기억을 더듬어보니 조금 생각날 것 같습니다. 무슨 꿈인가요?  
-        [3] 길을 걷다 보니 바닥에 돈이 떨어져 있습니다. 얼마가 떨어져 있었나요?  
-
+        [1] 새벽 2시에 가장 친한 친구에게 전화가 왔습니다. 친구는 무슨 말을 할까요? : {q1}  
+        [2] 자고 일어났더니 어제 꿈을 꾼 것 같은데 기억이 잘 나지 않습니다. 기억을 더듬어보니 조금 생각날 것 같습니다. 무슨 꿈인가요? : {q2}  
+        [3] 길을 걷다 보니 바닥에 돈이 떨어져 있습니다. 얼마가 떨어져 있었나요?  : {q3}
         이 세 가지 대답을 바탕으로,  
         그 사람만의 **형용사처럼 느껴지는 시적인 특성 하나만** 지어줘.  
         그 특성은 평범해서는 안 돼.  
         예를 들어, “조용한”, “용감한” 같은 단어는 안 돼.  
         대신 “파도를 기다릴 줄 아는”, “한 번쯤은 무지개를 쫓아가봤을 것 같은”  
-        같이 말 자체에 상상이 담기고, 이야기가 흐르도록 만들어.  
+        같이 말 자체에 상상이 담기고, 이야기가 흐르도록 만들어.
 
         꼭 지켜야 할 규칙은 다음과 같아:
 
@@ -42,16 +31,9 @@ llm = OpenAILLM(
         8. 절대로 설명하지 마. **형용사 느낌의 말만 한 줄 출력해.**
 
         이제 대답은 오직 그 한 줄이야.
-        """,
-    max_tokens=20
-)
 
-# keyword = [
-#     "여자소개 좀 시켜줘",
-#     "우주인에게 납치당했지만 하늘을 날아 집으로 돌아오는 꿈",
-#     "십원짜리라 그냥 못 본척 하고 지나간다"
-# ]
+    """
 
-reply = llm.ask("[1] 릴스 보내준 거 왜 안 봐? 라는 이야기 , [2] 정말 큰 스피커가 있는 공연장에 가는 꿈, [3] 100만원")
 
-print(reply)
+    reply = llm.ask(prompt)
+    return reply.text.strip()

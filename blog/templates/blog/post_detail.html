@@ -7,6 +7,8 @@
     <source src="/static/music/{{ music }}.wav" type="audio/wav">
     음악재생을 지원하지 않는 브라우저입니다.
 </audio> <br>
+<p>조회수 : {{ post.views }}</p> <br>
+
 <a href="/blog/{{ username }}/">목록으로</a>
 {% if request.user == post.author %}
     <a href="/blog/user/{{ post.id }}/post/edit/">수정하기</a>

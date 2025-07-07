@@ -1,28 +1,62 @@
-<h2>{{ blog_owner.username }}님의 블로그</h2>
+{% extends "base.html" %}
 
-{% if is_owner %}
-    <a href="/blog/{{ blog_owner.username }}/write/">글쓰기</a>
-{% endif %}
+{% block title %}
+{{ blog_owner.username }}님의 블로그 | TOOTHPICK
+{% endblock %}
 
-<a href="/">메인으로</a>
+{% block content %}
+  <h2>
+    {% if blog_owner.userprofile.trait %}
+      [{{ blog_owner.userprofile.trait }}
+    {% endif %}
+    {% if blog_owner.userprofile.nickname %}
+      {{ blog_owner.userprofile.nickname }}
+    {% else %}body::before {
+    content: "";
+    background-image: url("/media/Whisk_92049287b5.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
 
-<form action="" method="get">
+      {{ blog_owner.username }}
+    {% endif %}
+    {% if blog_owner.userprofile.trait %}
+      ]
+    {% endif %}
+    님의 블로그
+  </h2>
+
+  {% if is_owner %}
+    <p><a href="/blog/{{ blog_owner.username }}/write/">✍ 글쓰기</a></p>
+  {% endif %}
+
+  <p><a href="/">🏠 메인으로</a></p>
+
+  <form action="" method="get" style="margin-bottom: 20px;">
     <input type="text" name="q" placeholder="검색어를 입력하세요" value="{{ query }}">
     <button type="submit">검색</button>
-</form>
+  </form>
 
-{% if query %}
+  {% if query %}
     <p>"<strong>{{ query }}</strong>"에 대한 검색 결과입니다.</p>
-{% endif %}
+  {% endif %}
 
-<hr>
-{% for post in post_list %}
-    <div>
-        <a href="/blog/{{ blog_owner.username }}/{{ post.id }}/">
-            {{ post.title }}
-        </a>
+  <hr>
+
+  {% for post in post_list %}
+    <div style="margin-bottom: 10px;">
+      <a href="/blog/{{ blog_owner.username }}/{{ post.id }}/">
+        📌 {{ post.title }}
+      </a>
     </div>
-{% empty %}
+  {% empty %}
     <p>작성한 글이 없습니다.</p>
-
-{% endfor %}
+  {% endfor %}
+{% endblock %}

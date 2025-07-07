@@ -10,8 +10,8 @@ env = Env()
 ENV_PATH = BASE_DIR / ".env"
 env.read_env(ENV_PATH, overwrite=True)
 
-# MEDIA_URL = "media/"
-# MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-lfq)u!7uk8c-#$sx&y1)2o9p$e=^m6qjb0psi!^-f&$wp(syvz'
