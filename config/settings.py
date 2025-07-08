@@ -19,7 +19,10 @@ SECRET_KEY = 'django-insecure-lfq)u!7uk8c-#$sx&y1)2o9p$e=^m6qjb0psi!^-f&$wp(syvz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ['52.15.110.12', 'localhost']
+ALLOWED_HOSTS = env.list(
+    "ALLOWED_HOSTS", 
+    default=["127.0.0.1"],
+    )
 
 
 # Application definition
@@ -134,3 +137,6 @@ LOGOUT_REDIRECT_URL = '/blog/'
 
 OPENAI_API_KEY = env.str("OPENAI_API_KEY", default=None)
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.ngrok-free.app'
+]
