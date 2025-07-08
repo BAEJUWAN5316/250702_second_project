@@ -72,8 +72,8 @@
   <div class="post-actions">
     <a href="/blog/{{ post.author.username }}/">Back to List</a>
     {% if request.user == post.author %}
-      <a href="/blog/user/{{ post.id }}/post/edit/">Edit</a>
-      <a href="/blog/user/{{ post.id }}/post/delete/">Delete</a>
+      <a href="/blog/{{ post.author.username }}/{{ post.id }}/post/edit/">Edit</a>
+      <a href="/blog/{{ post.author.username }}/{{ post.id }}/post/delete/">Delete</a>
     {% endif %}
   </div>
 
@@ -83,22 +83,18 @@
     </div>
   {% endif %}
 
-{% for comment in comment_list %}
-  <div class="comment">
-    <p><strong>{{ comment.author.username }}</strong></p>
-    <p>{{ comment.content }}</p>
+  {% for comment in comment_list %}
+    <div class="comment">
+      <p><strong>{{ comment.author.username }}</strong></p>
+      <p>{{ comment.content }}</p>
 
-    {% if request.user == comment.author %}
-      <div class="comment-actions">
-        <!-- ✅ comment_pk만 전달 -->
-        <a href="/blog/user/{{ comment.id }}/comment/edit/">Edit</a>
-
-        <!-- ✅ post_pk + comment_pk 전달 -->
-        <a href="/blog/user/{{ post.id }}/comment/{{ comment.id }}/delete/">Delete</a>
-      </div>
-    {% endif %}
-  </div>
-{% endfor %}
+      {% if request.user == comment.author %}
+        <div class="comment-actions">
+          <a href="/blog/user/{{ comment.id }}/comment/edit/">Edit</a>
+          <a href="/blog/user/{{ post.id }}/comment/{{ comment.id }}/delete/">Delete</a>
+        </div>
+      {% endif %}
+    </div>
+  {% endfor %}
 </div>
-
 {% endblock %}

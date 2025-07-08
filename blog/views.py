@@ -97,7 +97,7 @@ def post_edit(request:HttpRequest, pk:int, username:str):
     )
 
 # 포스트 지우기
-def post_delete(request: HttpRequest, pk: int, username:str) -> HttpResponse:
+def post_delete(request: HttpRequest, username: str, pk: int) -> HttpResponse:
     post = get_object_or_404(Post, pk=pk)
 
     if request.method == "GET":
@@ -108,8 +108,7 @@ def post_delete(request: HttpRequest, pk: int, username:str) -> HttpResponse:
     
     post.delete()
 
-    delete_url = f"/blog/{username}/"
-    return redirect(delete_url)
+    return redirect("post_list", username=username)
 
 
 # 댓글쓰기
