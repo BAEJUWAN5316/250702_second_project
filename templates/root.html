@@ -63,13 +63,26 @@
 
         <ul class="space-y-3">
           {% for user in user_list %}
-          <li>
-            <a href="/blog/{{ user.username }}/" class="block bg-white/70 px-5 py-3 rounded-lg text-black text-lg shadow-sm hover:bg-gray-200 hover:scale-[1.01] transition-all duration-200">
-              {% if user.userprofile.trait %}[{{ user.userprofile.trait }} {% endif %}
-              {% if user.userprofile.nickname %}{{ user.userprofile.nickname }}{% else %}{{ user.username }}{% endif %}
-              {% if user.userprofile.trait %}]{% endif %}
-            </a>
-          </li>
+            <li>
+              <a href="/blog/{{ user.username }}/"
+                 class="flex items-center gap-4 bg-white/70 px-5 py-3 rounded-lg text-black text-lg shadow-sm hover:bg-gray-200 hover:scale-[1.01] transition-all duration-200">
+
+                {% if user.userprofile.profile_image %}
+                  <img src="{{ user.userprofile.profile_image.url }}" alt="프로필 이미지"
+                       class="w-10 h-10 rounded-full object-cover" />
+                {% else %}
+                  <div class="w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white text-sm">
+                    ?
+                  </div>
+                {% endif %}
+
+                <span>
+                  {% if user.userprofile.trait %}[{{ user.userprofile.trait }} {% endif %}
+                  {% if user.userprofile.nickname %}{{ user.userprofile.nickname }}{% else %}{{ user.username }}{% endif %}
+                  {% if user.userprofile.trait %}]{% endif %}
+                </span>
+              </a>
+            </li>
           {% endfor %}
         </ul>
 

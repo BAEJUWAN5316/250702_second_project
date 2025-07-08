@@ -19,7 +19,7 @@ SECRET_KEY = 'django-insecure-lfq)u!7uk8c-#$sx&y1)2o9p$e=^m6qjb0psi!^-f&$wp(syvz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default = ["127.0.0.1"])
+ALLOWED_HOSTS = ['52.15.110.12', 'localhost']
 
 
 # Application definition
@@ -119,8 +119,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    BASE_DIR / 'static'
 ]
 
 # Default primary key field type
@@ -131,3 +133,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGOUT_REDIRECT_URL = '/blog/'  
 
 OPENAI_API_KEY = env.str("OPENAI_API_KEY", default=None)
+
