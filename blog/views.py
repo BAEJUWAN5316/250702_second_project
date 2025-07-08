@@ -156,15 +156,19 @@ def comment_edit(request:HttpRequest, comment_pk:int):
     )
 
 # 댓글 지우기
-def comment_delete(request: HttpRequest,post_pk:int, comment_pk: int) -> HttpResponse:
-    if request.method == "GET":
-        return render(request, "blog/confirm_delete.html")
-    
+def comment_delete(request: HttpRequest, post_pk: int, comment_pk: int) -> HttpResponse:
     comment = get_object_or_404(Comment, pk=comment_pk)
-    comment.delete()
 
-    post_url = f"/blog/user/{post_pk}/"
-    return redirect(post_url)
+    if request.method == "POST":
+        comment.delete()
+        return redirect(f"/blog/user/{post_pk}/")  # 또는 reverse 사용 가능
+
+    return render(request, "blog/confirm_delete.html", {
+        "post_pk": post_pk,
+        "comment_pk": comment_pk,
+        "username": comment.author.username,  # 필요시
+    })
+
 
 
 # 메인화면

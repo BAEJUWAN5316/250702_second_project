@@ -1,153 +1,88 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <title>TOOTHPICK</title>
-  <link href="https://fonts.googleapis.com/css2?family=Hahmlet&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TOOTHPICK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: 'Noto Sans KR', sans-serif;
+      }
+      .tv-static {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: url('/media/Whisk_92049287b5.jpg') center/cover no-repeat;
+        background-attachment: fixed;
+        filter: brightness(0.65) contrast(1.2);
+      }
+      .title-font {
+        font-family: 'Bebas Neue', sans-serif;
+      }
+    </style>
+  </head>
+  <body class="text-white overflow-x-hidden">
+    <!-- 배경 -->
+    <div class="tv-static"></div>
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Hahmlet', serif;
-      overflow-x: hidden;
-    }
+    <!-- 로고 & 버튼 -->
+    <div class="relative text-center mt-20">
+      <img src="/media/toothpick.png" alt="TOOTHPICK" class="w-[750px] mx-auto" />
 
-    body {
-      color: #fff;
-      position: relative;
-    }
-
-    .background {
-      background-image: url("/media/Whisk_92049287b5.jpg");
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      filter: brightness(51%);
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-
-    .logo-container {
-      position: relative;
-      text-align: center;
-      margin-top: 80px;
-    }
-
-    .logo {
-      width: 750px;  /* ✅ 기존보다 50% 확대 */
-    }
-
-    .action-button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: calc(50% + 390px); /* ✅ 로고 바로 오른쪽 */
-      width: 40px;
-      height: 40px;
-      cursor: pointer;
-    }
-
-    .menu {
-      margin-top: 40px;
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      font-size: 18px;
-    }
-
-    .menu a, .menu form {
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .menu form {
-      margin: 0;
-    }
-
-    .menu button {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .user-list {
-      margin-top: 80px;
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="background"></div>
-
-  <!-- 로고 + 버튼 -->
-  <div class="logo-container">
-    <img src="/media/toothpick.png" alt="TOOTHPICK 로고" class="logo">
-
-    {% if request.user.is_authenticated %}
-      <form action="{% url 'logout' %}" method="post" id="floating-logout-form">
-        {% csrf_token %}
-        <img src="/media/button_green.png" alt="logout"
-             class="action-button" onclick="return confirmLogout();">
-      </form>
-    {% else %}
-      <a href="{% url 'login' %}">
-        <img src="/media/button_red.png" alt="login" class="action-button">
-      </a>
-    {% endif %}
-  </div>
-
-  <!-- 메뉴 -->
-  {% if request.user.is_authenticated %}
-    <div class="menu">
-      <a href="/blog/{{ request.user.username }}/">MY BLOG</a>
-      <a href="{% url 'profile' %}">PROFILE</a>
-      <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit" onclick="return confirmLogout()">LOGOUT</button>
-      </form>
+      {% if request.user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post" onsubmit="return confirm('로그아웃을 하시겠습니까?')" class="absolute top-1/2 left-[calc(50%+390px)] -translate-y-1/2">
+          {% csrf_token %}
+          <button type="submit">
+            <img src="/media/button_green.png" alt="logout" class="w-10 h-10" />
+          </button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}" class="absolute top-1/2 left-[calc(50%+390px)] -translate-y-1/2">
+          <img src="/media/button_red.png" alt="login" class="w-10 h-10" />
+        </a>
+      {% endif %}
     </div>
-  {% endif %}
 
-  <div class="menu" style="margin-top: 20px;">
-    <a href="#user-list">BLOGS</a>
-  </div>
-
-  <!-- 유저 리스트 -->
-  <div id="user-list" class="user-list">
-    <h3>들어가보세요!</h3>
-    <ul>
-      {% for user in user_list %}
-        <li>
-          {% if user.userprofile.trait %}
-            [{{ user.userprofile.trait }}
+    <!-- 유저 리스트 영역 -->
+    <div id="user-list" class="flex justify-center mt-20 mb-20 px-4">
+      <div class="max-w-4xl w-full text-white">
+        <div class="flex justify-between mb-6">
+          <h2 class="text-3xl title-font tracking-wide">WHO ARE THEY?</h2>
+          {% if request.user.is_authenticated %}
+            <div class="flex gap-6">
+              <a href="{% url 'profile' %}" class="text-3xl title-font tracking-wide hover:underline">PROFILE</a>
+              <a href="/blog/{{ request.user.username }}/" class="text-3xl title-font tracking-wide hover:underline">MY BLOG</a>
+            </div>
           {% endif %}
-          {% if user.userprofile.nickname %}
-            {{ user.userprofile.nickname }}
-          {% else %}
-            {{ user.username }}
-          {% endif %}
-          {% if user.userprofile.trait %}
-            ]
-          {% endif %}
-          - <a href="/blog/{{ user.username }}/">블로그 보기</a>
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
+        </div>
 
-  <script>
-    function confirmLogout() {
-      return confirm("로그아웃을 하시겠습니까?");
-    }
-  </script>
+        <ul class="space-y-3">
+          {% for user in user_list %}
+          <li>
+            <a href="/blog/{{ user.username }}/" class="block bg-white/70 px-5 py-3 rounded-lg text-black text-lg shadow-sm hover:bg-gray-200 hover:scale-[1.01] transition-all duration-200">
+              {% if user.userprofile.trait %}[{{ user.userprofile.trait }} {% endif %}
+              {% if user.userprofile.nickname %}{{ user.userprofile.nickname }}{% else %}{{ user.username }}{% endif %}
+              {% if user.userprofile.trait %}]{% endif %}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
 
-</body>
+        <div class="flex justify-between text-[10px] mt-6 uppercase tracking-widest text-gray-300">
+          <span>oreca life</span>
+          <span>oreca life</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 푸터 -->
+    <footer class="text-center text-sm text-gray-400 mt-12">
+      ⓒ 2025 Toothpick Project. All rights reserved.
+    </footer>
+  </body>
 </html>

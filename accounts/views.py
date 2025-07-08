@@ -75,7 +75,7 @@ def assign_trait(request):
         return redirect("profile")
     
     if request.method == "POST":
-        form = TraitSurvetForm(request.POST)
+        form = TraitSurveytForm(request.POST)
         if form.is_valid():
             q1 = form.cleaned_data["q1"]
             q2 = form.cleaned_data["q2"]
@@ -87,7 +87,7 @@ def assign_trait(request):
             return redirect("profile")
     
     else:
-        form = TraitSurvetForm()
+        form = TraitSurveytForm()
 
     return render(
         request,

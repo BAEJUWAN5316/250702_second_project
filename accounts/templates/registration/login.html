@@ -1,7 +1,101 @@
-<h2>로그인!</h2>
-<form action="" method="post" novalidate>
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="로그인">
-    <a href="/">메인으로</a>
-</form>
+{% extends "base.html" %}
+
+{% block title %}Login | TOOTHPICK{% endblock %}
+
+{% block content %}
+  <div class="login-container">
+    <h2>Login</h2>
+    <form action="" method="post" novalidate>
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="id_username">Username</label>
+        <input type="text" name="username" id="id_username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="id_password">Password</label>
+        <input type="password" name="password" id="id_password" required>
+      </div>
+
+      <input type="submit" value="Login">
+
+      <div class="links">
+        <a href="/">← Home</a> |
+        <a href="{% url 'register' %}">Sign up</a>
+      </div>
+    </form>
+  </div>
+
+  <style>
+    .login-container {
+      max-width: 400px;
+      margin: 100px auto;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #000;
+      padding: 40px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .login-container h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .login-container input[type="submit"] {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #222;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .login-container input[type="submit"]:hover {
+      background-color: #444;
+    }
+
+    .links {
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .links a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+{% endblock %}

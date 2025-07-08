@@ -1,7 +1,78 @@
-<a href="/auth/profile/">돌아가기</a>
+{% extends "base.html" %}
 
-<form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" name="update_profile">프로필 저장</button>
-</form>
+{% block title %}Edit Profile | TOOTHPICK{% endblock %}
+
+{% block content %}
+  <style>
+    .profile-edit-container {
+      max-width: 500px;
+      margin: 100px auto;
+      padding: 40px;
+      background-color: rgba(0, 0, 0, 0.85);
+      color: white;
+      font-family: 'Hahmlet', serif;
+    }
+
+    .profile-edit-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .profile-edit-container form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .profile-edit-container label {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .profile-edit-container input,
+    .profile-edit-container select,
+    .profile-edit-container textarea {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #888;
+      border-radius: 4px;
+      background-color: white;
+      color: black;
+    }
+
+    .profile-edit-container button {
+      padding: 12px;
+      background-color: white;
+      color: black;
+      border: none;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .profile-edit-container button:hover {
+      background-color: #ddd;
+    }
+
+    .profile-edit-container .back-link {
+      display: block;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ccc;
+      text-decoration: underline;
+      font-size: 14px;
+    }
+  </style>
+
+  <div class="profile-edit-container">
+    <a href="{% url 'profile' %}" class="back-link">← Back to Profile</a>
+    <h2>Edit Profile</h2>
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" name="update_profile">SAVE PROFILE</button>
+    </form>
+  </div>
+{% endblock %}

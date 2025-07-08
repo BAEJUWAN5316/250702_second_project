@@ -1,6 +1,77 @@
-<form action="" method="post" enctype="multipart/form-data" novalidate>
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit">
-</form>
+{% extends "base.html" %}
 
+{% block title %}Create/Edit Post | TOOTHPICK{% endblock %}
+
+{% block content %}
+  <style>
+    body::before {
+      content: "";
+      background-image: url("/media/form_image.png");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .monitor-form-container {
+      width: 60vw;
+      max-width: 800px;
+      margin: 0 auto; /* ✅ 위 여백 제거 */
+      background-color: rgba(255, 255, 255, 0.0); /* 완전 투명 배경 */
+      padding: 50px 0;
+      color: #000;
+      font-family: 'Hahmlet', serif;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border: none;
+      box-shadow: none; /* ✅ 그림자 제거 */
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    input[type="text"], textarea, select, input[type="file"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+    }
+
+    input[type="submit"] {
+      padding: 12px;
+      background-color: #000;
+      color: #fff;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+      text-transform: uppercase;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #222;
+    }
+  </style>
+
+  <div class="monitor-form-container">
+    <form action="" method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="SUBMIT">
+    </form>
+  </div>
+{% endblock %}

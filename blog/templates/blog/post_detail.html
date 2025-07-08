@@ -1,31 +1,104 @@
-<h2>POST</h2>
-{{ title }} <br>
-<hr>
-{{ description }} <br>
-<img src="{{ photo.url }}" alt="" width="300px"> <br>
-<audio controls autoplay loop>
-    <source src="/static/music/{{ music }}.wav" type="audio/wav">
-    음악재생을 지원하지 않는 브라우저입니다.
-</audio> <br>
-<p>조회수 : {{ post.views }}</p> <br>
+{% extends "base.html" %}
 
-<a href="/blog/{{ username }}/">목록으로</a>
-{% if request.user == post.author %}
-    <a href="/blog/user/{{ post.id }}/post/edit/">수정하기</a>
-    <a href="/blog/user/{{ post.id }}/post/delete/">게시글 삭제하기</a> <br>
-{% endif %}
+{% block title %}Post Detail | TOOTHPICK{% endblock %}
 
-{% if request.user.is_authenticated %}
-    <a href="/blog/user/{{ post.id }}/comment/">댓글쓰기</a> <br>
-{% endif %}
-<hr>
+{% block content %}
+<style>
+  .post-container {
+    max-width: 720px;
+    margin: 100px auto;
+    background-color: #000;
+    color: #fff;
+    padding: 40px;
+    font-family: 'Hahmlet', serif;
+  }
+
+  .post-container h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+
+  .post-image {
+    width: 100%;
+    margin: 20px 0;
+  }
+
+  .post-meta {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 30px;
+  }
+
+  .post-actions a,
+  .comment-actions a,
+  .comment-write a {
+    display: inline-block;
+    margin-right: 12px;
+    color: #fff;
+    font-size: 14px;
+    padding: 6px 10px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+
+  .post-actions a:hover,
+  .comment-actions a:hover,
+  .comment-write a:hover {
+    background-color: #fff;
+    color: #000;
+  }
+
+  .comment {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #333;
+  }
+</style>
+
+<div class="post-container">
+  <h2>{{ post.title }}</h2>
+  <p>{{ post.description }}</p>
+  <img class="post-image" src="{{ post.photo.url }}" alt="Post Image">
+
+  <audio controls autoplay loop style="width: 100%;">
+    <source src="/static/music/{{ post.music }}.wav" type="audio/wav">
+    Your browser does not support the audio tag.
+  </audio>
+
+  <p class="post-meta">Views: {{ post.views }}</p>
+
+  <div class="post-actions">
+    <a href="/blog/{{ post.author.username }}/">Back to List</a>
+    {% if request.user == post.author %}
+      <a href="/blog/user/{{ post.id }}/post/edit/">Edit</a>
+      <a href="/blog/user/{{ post.id }}/post/delete/">Delete</a>
+    {% endif %}
+  </div>
+
+  {% if request.user.is_authenticated %}
+    <div class="comment-write">
+      <a href="/blog/user/{{ post.id }}/comment/">Write Comment</a>
+    </div>
+  {% endif %}
 
 {% for comment in comment_list %}
-    {{ comment.author.username }}
-    {{ comment.content }}
+  <div class="comment">
+    <p><strong>{{ comment.author.username }}</strong></p>
+    <p>{{ comment.content }}</p>
+
     {% if request.user == comment.author %}
-        <a href="/blog/{{ request.user.name }}/{{ comment.id }}/comment/edit/">수정</a>
-        <a href="/blog/{{ request.user.username }}/{{ post.id }}/comment/{{ comment.id }}/delete/">삭제</a>
+      <div class="comment-actions">
+        <!-- ✅ comment_pk만 전달 -->
+        <a href="/blog/user/{{ comment.id }}/comment/edit/">Edit</a>
+
+        <!-- ✅ post_pk + comment_pk 전달 -->
+        <a href="/blog/user/{{ post.id }}/comment/{{ comment.id }}/delete/">Delete</a>
+      </div>
     {% endif %}
-    <br>
+  </div>
 {% endfor %}
+</div>
+
+{% endblock %}

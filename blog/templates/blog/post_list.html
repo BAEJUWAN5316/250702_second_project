@@ -1,62 +1,178 @@
 {% extends "base.html" %}
 
 {% block title %}
-{{ blog_owner.username }}님의 블로그 | TOOTHPICK
+  {{ blog_owner.username }}님의 블로그 | TOOTHPICK
 {% endblock %}
 
 {% block content %}
-  <h2>
-    {% if blog_owner.userprofile.trait %}
-      [{{ blog_owner.userprofile.trait }}
-    {% endif %}
-    {% if blog_owner.userprofile.nickname %}
-      {{ blog_owner.userprofile.nickname }}
-    {% else %}body::before {
-    content: "";
-    background-image: url("/media/Whisk_92049287b5.jpg");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
+<div class="blog-container">
+  <!-- 상단 헤더 -->
+  <div class="blog-header">
+    <div class="blog-owner">
+      {% if blog_owner.userprofile.trait %}
+        [{{ blog_owner.userprofile.trait }}
+      {% endif %}
+      {% if blog_owner.userprofile.nickname %}
+        {{ blog_owner.userprofile.nickname }}
+      {% else %}
+        {{ blog_owner.username }}
+      {% endif %}
+      {% if blog_owner.userprofile.trait %}]
+      {% endif %}
+    </div>
 
-      {{ blog_owner.username }}
-    {% endif %}
-    {% if blog_owner.userprofile.trait %}
-      ]
-    {% endif %}
-    님의 블로그
-  </h2>
+    <div class="blog-actions">
+      <form action="" method="get" class="search-form">
+        <input type="text" name="q" placeholder="Search" value="{{ query }}">
+        <button type="submit">검색</button>
+      </form>
 
-  {% if is_owner %}
-    <p><a href="/blog/{{ blog_owner.username }}/write/">✍ 글쓰기</a></p>
-  {% endif %}
-
-  <p><a href="/">🏠 메인으로</a></p>
-
-  <form action="" method="get" style="margin-bottom: 20px;">
-    <input type="text" name="q" placeholder="검색어를 입력하세요" value="{{ query }}">
-    <button type="submit">검색</button>
-  </form>
+      {% if is_owner %}
+        <a href="/blog/{{ blog_owner.username }}/write/" class="write-button">글쓰기</a>
+      {% endif %}
+    </div>
+  </div>
 
   {% if query %}
-    <p>"<strong>{{ query }}</strong>"에 대한 검색 결과입니다.</p>
+    <p class="query-result">"<strong>{{ query }}</strong>"에 대한 검색 결과입니다.</p>
   {% endif %}
 
-  <hr>
-
-  {% for post in post_list %}
-    <div style="margin-bottom: 10px;">
-      <a href="/blog/{{ blog_owner.username }}/{{ post.id }}/">
-        📌 {{ post.title }}
+  <!-- 게시글 목록 -->
+  <div class="post-grid">
+    {% for post in post_list %}
+      <a href="/blog/{{ blog_owner.username }}/{{ post.id }}/" class="post-card">
+        <h3>{{ post.title }}</h3>
+        {% if post.photo %}
+          <img src="{{ post.photo.url }}" alt="post image">
+        {% endif %}
+        <p class="description">{{ post.description|truncatechars:80 }}</p>
       </a>
-    </div>
-  {% empty %}
-    <p>작성한 글이 없습니다.</p>
-  {% endfor %}
+    {% empty %}
+      <p class="empty-text">작성한 글이 없습니다.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .blog-container {
+    padding: 60px 5vw;
+    min-height: 100vh;
+    background-color: black;
+    color: white;
+  }
+
+  .blog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .blog-owner {
+    font-size: 22px;
+    font-weight: 600;
+    max-width: 50%;
+    text-align: left;
+  }
+
+  .blog-actions {
+    max-width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .search-form {
+    display: flex;
+    gap: 6px;
+  }
+
+  .search-form input {
+    padding: 6px 10px;
+    border: none;
+  }
+
+  .search-form button {
+    padding: 6px 10px;
+    background: #222;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  .write-button {
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .post-card {
+    background-color: rgba(255, 255, 255, 0.06);
+    padding: 16px;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .post-card:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .post-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  .post-card h3 {
+    font-size: 18px;
+    margin: 0;
+  }
+
+  .description {
+    font-size: 14px;
+    color: #ccc;
+  }
+
+  .query-result {
+    margin-top: 10px;
+    color: #ccc;
+  }
+
+  .empty-text {
+    color: #aaa;
+    font-size: 16px;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 600px) {
+    .blog-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .blog-owner, .blog-actions {
+      max-width: 100%;
+    }
+
+    .blog-owner {
+      font-size: 18px;
+    }
+  }
+</style>
 {% endblock %}

@@ -1,28 +1,91 @@
-<h2>프로필 수정</h2>
-<a href="/">돌아가기</a>
+{% extends "base.html" %}
 
-<p>닉네임 : {{ profile.nickname }}</p>
-<p>아이디 : {{ request.user.username }}</p>
+{% block title %}My Profile | TOOTHPICK{% endblock %}
 
-{% if profile.profile_image %}
-    <img src="{{ profile.profile_image.url }}" alt="" width="100">
-{% endif %}
+{% block content %}
+  <style>
+    .profile-container {
+      max-width: 500px;
+      margin: 140px auto 80px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 40px;
+      font-family: 'Hahmlet', serif;
+    }
 
-<h2>
-    {% if profile.trait %}
-        [{{ profile.trait }} {{ profile.nickname|default:user.username }}]
-    {% else %}
-        {{ profile.nickname|default:user.username }}
+    .profile-container h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .profile-container p {
+      margin: 10px 0;
+    }
+
+    .profile-container img {
+      width: 100px;
+      border-radius: 8px;
+      display: block;
+      margin: 10px auto;
+    }
+
+    .profile-container .actions {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+    }
+
+    .profile-container a {
+      color: #fff;
+      background: #000;
+      padding: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .profile-container a:hover {
+      background-color: #222;
+    }
+
+    .note {
+      font-size: 13px;
+      color: #bbb;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+
+  <div class="profile-container">
+    <h2>MY PROFILE</h2>
+
+    <p><strong>Nickname:</strong> {{ profile.nickname }}</p>
+    <p><strong>Username:</strong> {{ request.user.username }}</p>
+
+    {% if profile.profile_image %}
+      <img src="{{ profile.profile_image.url }}" alt="Profile Image">
     {% endif %}
-</h2>
 
-<hr>
+    <h2>
+      {% if profile.trait %}
+        [{{ profile.trait }} {{ profile.nickname|default:user.username }}]
+      {% else %}
+        {{ profile.nickname|default:user.username }}
+      {% endif %}
+    </h2>
 
-{% if not profile.trait %}
-    <a href="{% url 'assign_trait' %}">특성 부여받기</a>
-{% else %}
-    <p><em>특성은 한 번만 부여되며 수정할 수 없습니다.</em></p>
-{% endif %}
+    <div class="actions">
+      {% if not profile.trait %}
+        <a href="{% url 'assign_trait' %}">Assign Trait</a>
+      {% else %}
+        <p class="note">Traits are assigned once and cannot be changed.</p>
+      {% endif %}
 
-<a href="{% url 'profile_edit' %}">프로필 수정하기</a>
-<a href="{% url 'password_change' %}">비밀번호 변경하기</a>
+      <a href="{% url 'profile_edit' %}">Edit Profile</a>
+      <a href="{% url 'password_change' %}">Change Password</a>
+      <a href="/">Back to Home</a>
+    </div>
+  </div>
+{% endblock %}

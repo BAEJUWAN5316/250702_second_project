@@ -1,7 +1,89 @@
-<h2>당신의 특성 부여를 위한 질문입니다.</h2>
+{% extends "base.html" %}
 
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">특성 생성하기</button>
-</form>
+{% block title %}Assign Trait | TOOTHPICK{% endblock %}
+
+{% block content %}
+  <style>
+    .trait-form-container {
+      max-width: 600px;
+      margin: 100px auto;
+      background-color: rgba(0, 0, 0, 0.85);
+      color: white;
+      padding: 40px;
+      font-family: 'Hahmlet', serif;
+    }
+
+    .trait-form-container h2 {
+      font-size: 22px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .trait-form-container form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .trait-form-container label {
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .trait-form-container input[type="text"],
+    .trait-form-container textarea {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      color: black; /* ✅ 글씨색 명시 */
+      background-color: white;
+    }
+
+    .trait-form-container textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+
+    .trait-form-container button {
+      padding: 14px;
+      background-color: white;
+      color: black;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .trait-form-container button:hover {
+      background-color: #ddd;
+    }
+
+    .back-link {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .back-link a {
+      color: white;
+      font-size: 14px;
+      text-decoration: underline;
+    }
+  </style>
+
+  <div class="trait-form-container">
+    <h2>당신의 특성 부여를 위한 질문입니다.</h2>
+
+    <form action="" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Generate Trait</button>
+    </form>
+
+    <div class="back-link">
+      <a href="{% url 'profile' %}">← Back to Profile</a>
+    </div>
+  </div>
+{% endblock %}
