@@ -3,6 +3,7 @@
 > Gen-Z 세대를 위한 라이프스타일 블로그,  
 > **"제한 속에서 피어나는 창의력"**  
 > 블로그 같지 않은 블로그, TOOTHPICK입니다.
+- 배포 주소: [https://3a118c0096a4.ngrok-free.app/]
 
 ![alt text](메인이미지.png)
 
@@ -77,7 +78,7 @@ TOOTHPICK은 후자에 더 가깝습니다.
 - 프로젝트명: TOOTHPICK BLOG  
 - 타겟 유저: Gen-Z 세대  
 - 슬로건: _불편함 속에서 발견되는_
-- 배포 주소: [https://d43e7fe29821.ngrok-free.app/]
+
 ---
 
 ## 🔧 핵심 기능
