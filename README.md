@@ -3,7 +3,7 @@
 > Gen-Z 세대를 위한 라이프스타일 블로그,  
 > **"제한 속에서 피어나는 창의력"**  
 > 블로그 같지 않은 블로그, TOOTHPICK입니다.
-- 배포 주소: [https://3a118c0096a4.ngrok-free.app/]
+- 배포 주소: [https://fbc0cd03ebd4.ngrok-free.app/]
 
 ![alt text](메인이미지.png)
 
